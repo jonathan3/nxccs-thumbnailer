@@ -24,11 +24,13 @@ CONFIGURING
 You can configure your instance of the Thumbnailer using the config.yaml file.
 It is in YAML format, just like app.yaml. 
 
-URLs for screenshot services (under "screenshotters") use regular expressions.
-For example:
+URLs for screenshot services are in the following format:
 
  - service: example
-   url: http://www.example.com/api?url=(?P<url>[.*]+)&width=(?P<maxwidth>[0-9]+)&height=(?P<maxheight>[0-9]+)
+   url: http://www.example.com/api?url={url}&width={maxwidth}&height={maxheight}
+
+The tags in curly brackets are replaced on each request with the user's
+parameters.
 
 CONTRIBUTING
 ============
