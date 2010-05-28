@@ -1,0 +1,38 @@
+NXCCS Thumbnailer
+=================
+
+The Thumbnailer uses oEmbed and various website screenshot services to create
+a thumbnail out of anything you throw at it. Depending on the user-defined
+maximum sizes, it may resize the image and upload it to Amazon S3.
+
+DEPENDENCIES
+============
+
+Currently the Thumbnailer relies on Google App Engine's webapp framework. If you
+want to run it on your own machine, you can either download the App Engine SDK
+at http://code.google.com/appengine/ or substitute webapp for web.py.
+
+The Thumbnailer also uses the boto library's S3 functions to cache thumbnails.
+boto 1.9b is included with the distribution as boto.zip.
+
+For oEmbed functionality, the Thumbnailer uses Embed.ly's service, although this
+can be replaced with any other oEmbed provider if you wish.
+
+CONFIGURING
+===========
+
+You can configure your instance of the Thumbnailer using the config.yaml file.
+It is in YAML format, just like app.yaml. 
+
+URLs for screenshot services (under "screenshotters") use regular expressions.
+For example:
+
+ - service: example
+   url: http://www.example.com/api?url=(?P<url>[.*]+)&width=(?P<maxwidth>[0-9]+)&height=(?P<maxheight>[0-9]+)
+
+CONTRIBUTING
+============
+
+The Thumbnailer is licenced under the GNU Affero General Public License, and
+any contributions are welcome. Be sure to add your copyright to the files you
+edit.

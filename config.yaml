@@ -1,0 +1,20 @@
+provider_name: Thumbnailer
+provider_url: http://thumbnailer.nxccs.com/
+suggested_cache_time: 604800
+
+aws_key: <aws key here>
+aws_secret_key: <aws secret key here>
+s3_bucket_name: <s3 bucket name here>
+
+screenshotters:
+ - service: snapcasa
+   url: http://snapcasa.com/get.aspx?code=XXXXX&width={maxwidth}&height={maxheight}&file=PNG&url={url}
+      
+ - service: thumbalizr
+   url: http://api.thumbalizr.com/?url={url}&width={maxwidth}&api_key=372a5004baecc134c27d5271e4da09e8
+
+# - service: shrinktheweb
+#   url: http://www.shrinktheweb.com/xino.php?embed=1&STWAccessKeyId=XXXXXXXXXXXXXXX&stwsize=sm&stwUrl={url}
+
+ - service: thumbshots
+   url: http://open.thumbshots.org/image.aspx?url={url}

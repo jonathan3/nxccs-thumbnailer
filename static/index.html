@@ -1,0 +1,125 @@
+<!doctype html>
+<html><title>Thumbnailer</title><meta charset="utf-8"><meta name="robots" content="index, nofollow">
+<style type="text/css">
+body{font-family:sans-serif;line-height:150%;width:75%}
+noscript pre{width:100%;overflow:auto}
+tt{background:#eee}
+abbr{border-bottom:1px dotted #000;cursor:help}
+dt{font-weight:bold}
+dd{margin-bottom:10px}
+#toc{float:right;border:1px solid #ccc;background:#eee;padding:20px;position:fixed;top:0;right:0;width:20%}
+#toc h2{margin-top:0;padding-top:0}
+#toc ol{margin-bottom:0;padding-bottom:0}
+.gist{font-size:80%}
+a img{border:0}
+.warning{color:red;font-weight:bold}
+</style>
+<body>
+<h1>Thumbnailer</h1>
+
+<p>Thumbnailer is a free service which finds or generates thumbnails from anything, from
+images, to webpages, to YouTube videos.</p>
+
+<aside id="toc">
+<h2>Table of Contents</h2>
+<ol>
+    <li><a href="#services-supported">Services supported</a></li>
+    <li><a href="#how-to">How to use it</a></li>
+    <li>
+        <a href="#responses">Responses</a>
+        <ol>
+            <li><a href="#responses-plaintext">Plaintext</a></li>
+            <li><a href="#responses-json-oembed">JSON (oEmbed)</a></li>
+        </ol>
+    </li>
+    
+    <li><a href="#credits">Credits</a></li>
+</ol>
+</aside>
+
+<h2 id="services-supported">Services supported</h2>
+<ul>
+    <li>Any direct link to an image</li>
+    <li>Every service provided by <a href="http://embed.ly">Embed.ly</a> that provides thumbnails or images, including <a href="http://youtu.be/">YouTube</a>, <a href="http://vimeo.com/">Vimeo</a>, <a href="http://flic.kr/">Flickr</a> and more.</li>
+    <li>Website screenshots courtesy of <a href="http://snapcasa.com/">SnapCasa</a> and <a href="http://www.thumbshots.com" target="_blank" title="Thumbnails Previews by Thumbshots">Thumbshots</a>, for websites without oEmbed data.</li>
+</ul>
+
+<h2 id="how-to">How to use it</h2>
+
+<p><span class="warning">Please be responsible when using this free service. Excessive usage may result in your IP address being blocked.</span> We recommend caching responses for at least 7 days.</p>
+
+<p>The <abbr title="Application Programming Interface">API</abbr> endpoint
+is <tt>http://thumbnailer.nxccs.com/api</tt>. The following parameters are
+accepted as <tt>POST</tt> or <tt>GET</tt> requests:</p>
+
+<dl>
+<dt>url (required)</dt>
+<dd>The <abbr title="Uniform Resource Locator">URL</abbr> of the media file
+or page you want to generate a thumbnail from.<br>
+<strong>Default:</strong> <em>none</em>.<br>
+<strong>Accepted inputs</strong>: <em>any valid URL</em>.
+</dd>
+
+<dt>format (optional)</dt>
+<dd>The data format you want your response to arrive in.<br>
+<strong>Default:</strong> <tt>plaintext</tt>.<br>
+<strong>Accepted inputs</strong>: <tt>plaintext</tt>, <tt>json</tt>.
+</dd>
+
+<dt>maxwidth (optional)</dt>
+<dd>The maximum width of the thumbnail, in pixels. If specified, we will try and
+scale the thumbnail to fit.<br>
+<strong>Default:</strong> <tt>320</tt>.<br>
+<strong>Accepted inputs:</strong> <em>anything up to</em> <tt>640</tt>
+</dd>
+
+<dt>maxheight (optional)</dt>
+<dd>The maximum height of the thumbnail, in pixels. If specified, we will try and
+scale the thumbnail to fit.<br>
+<strong>Default:</strong> <tt>240</tt>.<br>
+<strong>Accepted inputs:</strong> <em>anything up to</em> <tt>640</tt>
+</dd>
+
+<dt>callback (optional)</dt>
+<dd>If the chosen format is <abbr title="JavaScript Object Notation">JSON</abbr>,
+the response will be in <tt>jsonp</tt> format. The callback is the name of the JavaScript
+function to execute.<br>
+<strong>Default:</strong> <em>blank</em><br>
+<strong>Accepted inputs:</strong> <em>anything</em>
+</dd>
+</dl>
+
+<h2 id="responses">Responses</h2>
+
+Responses are available in two formats: plaintext and JSON (oEmbed).
+
+<h3 id="responses-plaintext">Plaintext</h3>
+
+<p>Plaintext responses simply return the URL of the thumbnail, and nothing else. We
+recommend this format as it is lighter on server load than JSON.</p>
+
+<h4>Example 1</h4>
+<p><strong>Request:</strong> <tt><a href="api?url=http%3A//www.youtube.com/watch%3Fv%3Dvk1HvP7NO5w">http://thumbnailer.nxccs.com/api?url=http%3A//www.youtube.com/watch%3Fv%3Dvk1HvP7NO5w</a></tt><br>
+<strong>Response:</strong> <tt><a href="http://i3.ytimg.com/vi/vk1HvP7NO5w/hqdefault.jpg">http://i3.ytimg.com/vi/vk1HvP7NO5w/hqdefault.jpg</a></tt></p>
+
+<h4>Example 2</h4>
+<p><strong>Request:</strong> <tt><a href="api?url=http://imgur.com/wCRw7.jpg&amp;maxwidth=80&amp;maxheight=80">http://thumbnailer.nxccs.com/api?url=http://imgur.com/wCRw7.jpg&amp;maxwidth=80&amp;maxheight=80</a></tt><br>
+<strong>Response:</strong> <tt><a href="https://s3.amazonaws.com/thumbnailer/00wwt90my518108ez6y5lka5awh.png">https://s3.amazonaws.com/thumbnailer/00wwt90my518108ez6y5lka5awh.png</a></tt> <em>(subject to change)</em></p>
+
+<h3 id="responses-json-oembed">JSON (oEmbed)</h3>
+
+<p><strong>Note:</strong> The <tt>width</tt> and <tt>height</tt> properties may not be accurate.</p>
+
+<h4>Example 1</h4>
+<p><strong>Request:</strong> <tt><a href="api?url=http%3A//www.youtube.com/watch%3Fv%3Dvk1HvP7NO5w&amp;format=json">http://thumbnailer.nxccs.com/api?url=http%3A//www.youtube.com/watch%3Fv%3Dvk1HvP7NO5w&amp;format=json</a></tt><br>
+<strong>Response:</strong> <script src="http://gist.github.com/416560.js"></script><noscript><pre>{"provider_url": "http://thumbnailer.nxccs.com/", "version": "1.0", "width": 320, "url": "http://i.ytimg.com/vi/vk1HvP7NO5w/default.jpg", "provider_name": "Thumbnailer", "cache_age": 604800, "type": "photo", "height": 240}</pre></noscript></p>
+
+<h2 id="credits">Credits</h2>
+<ul>
+    <li>Favicon by <a href="http://www.famfamfam.com/">Mark James</a></li>
+    <li>Uses <a href="http://embed.ly">Embed.ly</a></li>
+</ul>
+
+<footer>
+<a href="http://appengine.google.com/"><img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif" alt="Powered by Google App Engine"></a>
+</footer>
