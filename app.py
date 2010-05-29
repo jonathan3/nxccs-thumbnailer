@@ -42,10 +42,6 @@ class API(webapp.RequestHandler):
         self.response.headers['Content-Type'] = get_mimetype(self.request.get('format'))
         self.response.out.write(api(self))
 
-class HeadRequest(urllib2.Request):
-    def get_method(self):
-        return "HEAD"
-
 # ugly hack
 def get_mimetype(format):
     if format == "json":
@@ -84,8 +80,8 @@ def is_mimetype_an_image(url):
     IMAGE_MIMETYPES = ['image/gif', 'image/jpeg', 'image/png']
     
     # Send a HEAD request to check the content-type
-    response = urllib2.urlopen(HeadRequest(url))
-    content_type = response.info().getheader('Content-Type').split('; ')
+    response = urlfetch.fetch(url, method=urlfetch.HEAD, headers={"User-Agent": "Mozilla/5.0 NXCCS Thumbnailer"})
+    content_type = response.headers['Content-Type'].split('; ')
     
     # Now compare the mimetype of the response against
     # our list of acceptable image mimetypes
@@ -97,11 +93,14 @@ def is_mimetype_an_image(url):
 
 def does_url_exist(url):
     try:
-        response = urllib2.urlopen(HeadRequest(url))
+        response = urlfetch.fetch(url, method=urlfetch.HEAD, headers={"User-Agent": "Mozilla/5.0 NXCCS Thumbnailer"})
     except:
         return False
     
-    return True
+    if response.status_code != 200 and response.status_code != 301 and response.status_code != 302:
+        return False
+    else:
+        return True
 
 def api(request):
     url =       request.request.get('url')
